@@ -10,6 +10,7 @@
 #include <deque> // double sided queue
 #include <algorithm> // algorithm library for sort function
 #include <string> // string class
+#include <cassert> // used for testing comparison functions
 using namespace std; // standard namespace
 
 struct Process // structure to hold a process
@@ -122,7 +123,16 @@ int main(int argc, char* argv[])
         else // otherwise, run the Round Robin algorithm
             roundRobin(readyQueue, timeQuant);
     }
-
+    // tests to verify correct logic execution for comparison functions
+    assert(compareArrivals({0,0,5},{1,1,5}) == true); // Test that sooner arrival time for left process results in function returning true
+    assert(compareArrivals({0,0,5},{1,0,5}) == true); // Test that same arrival time with lower PID for left process results in function returning true
+    assert(compareArrivals({1,1,5},{0,0,5}) == false); // Test that sooner arrival time for right process results in function returning false
+    assert(comparePID({0,0,5},{1,0,5}) == true); // Test that lower PID for left process results in function returning true
+    assert(comparePID({1,0,5},{0,0,5}) == false); // Test that lower PID for the right process results in function returning false
+    assert(compareTimeRemaining({0,0,4},{1,1,5}) == true); // Test that lower time remaining for left process returns true
+    assert(compareTimeRemaining({0,0,8},{1,1,2}) == false); // Test that lower time remaining for right process returns false
+    assert(compareTimeRemaining({0,0,5},{1,1,5}) == true); // Test that same time remaining for both processes but a lower PID for left process returns true
+    cout << "Comparison function tests all passed as expected" << endl;
     return(0);
 }// end of main
 
